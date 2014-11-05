@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-'''importation des bibliotheques nescessaires'''
+'''importation des bibliotheques nécessaires'''
 from config import *
 
 '''argparse'''
@@ -22,12 +22,16 @@ functions.init(log)
 sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre')
 
 ##############################
-
+# 'genre' est la concaténation du nom et du pourcentage
+list_genre = list()
 for ARGS in ['genre', 'subgenre', 'artist', 'album', 'title']:
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
 		for elem in arg_list:
-			print(elem)
+			if ARGS == 'genre':
+				list_genre.append(functions.convert(elem[1], 666))
+
+print(list_genre)
 
 '''
 for ARG in ['genre', 'subgenre', 'artist', 'album', 'title']:

@@ -1,0 +1,22 @@
+Pour elem[1] < 100:		Constats:
+
+90 = 60 + 30			(total initial)
+10 = 100 - 90			(reste)
+
+5 = 10 / 2			(division du reste par le nombre d'elem[1])
+
+100 = (60 + 5) + (30 + 5)	(rajout des pourcentages restants)
+100 =    65    +    35		(total final)
+
+91 = 61 + 30
+9 = 100 - 91
+
+4 (+1) || 4.5 = 9 / 2		(float mieux adapté que le integer pour les totaux initiaux impairs)
+______________________________
+Pour elem[1] > 100:
+
+120 = 60 + 30 + 10 + 20		(total initial)
+-20 = 120 - 100			(reste négatif; solution inadaptée)
+
+
+
