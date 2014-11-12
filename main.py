@@ -23,21 +23,21 @@ sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre')
 
 ##############################
 # 'genre' est la concaténation du nom et du pourcentage
-dict_all = dict()
+dict_args = dict()
 
 for ARGS in ['genre', 'subgenre', 'artist', 'album', 'title']:
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
-		dict_all[ARGS] = arg_list
-		for elem in dict_all[ARGS]:
+		dict_args[ARGS] = arg_list
+		for elem in dict_args[ARGS]:
 			elem[1] = functions.convert(elem[1], 666)
 
-print(dict_all)
+print(dict_args)
 
 pourcentage = dict()
-for ARGS in dict_all:
-	pourcentage[ARGS] = dict_all
-	for elem in dict_all[ARGS]:
+for ARGS in dict_args:
+	pourcentage[ARGS] = dict_args
+	for elem in dict_args[ARGS]:
 		pourcentage[ARGS] = elem[1]
 
 print(pourcentage)
@@ -48,7 +48,7 @@ print(pourcentage)
 print(list_genre)
 totalenre
 for elem in lis_genre:
-	totalenre += elem'''
+	totalgenre += elem'''
 
 '''
 for ARG in ['genre', 'subgenre', 'artist', 'album', 'title']:
