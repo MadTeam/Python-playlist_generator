@@ -47,7 +47,6 @@ def logging(pathFile, stdOut=False, fmt=None, datefmt=None):
 
 	return logger
 
-
 class functions:
 	def init(self, logger):
 		self._log = logger
@@ -110,8 +109,29 @@ class functions:
 			quit()
 		
 
+	def toXML(self, music_list, filename):
+		from lxml import etree
+		root = etree.Element('playlist')
+		doc = etree.ElementTree(root)
+		i = 0
+		
+		for elem in music_list:
+			child = etree.SubElement(root, "music"+str(i))
+			path = etree.SubElement(child, elem[0])
+			title = etree.SubElement(child, elem[1])
+			artist = etree.SubElement(child, elem[2])
+			album = etree.SubElement(child, elem[3])
+			genre = etree.SubElement(child, elem[4])
+			subgenre = etree.SubElement(child, elem[5])
+			length = etree.SubElement(child, elem[6])
+			i += 1
+		
+		outFile = open(filename, 'w')
+		doc.write(outFile)
+
 	init = classmethod(init)
 	diffType = classmethod(diffType)
 	convert = classmethod(convert)
 	chkValue = classmethod(chkValue)
 	getSqlBdd = classmethod(getSqlBdd)
+	toXML = classmethod(toXML)

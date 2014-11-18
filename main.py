@@ -60,12 +60,14 @@ for ARGS in dict_args:
 log.debug("conditions SQL(regex compris) : "+where)
 sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where)
 
+sql = list(sql)
+
 for elem in sql:
 	log.info(elem)
 #récupération de la liste des musiques exigées
 ###################################
 
-
+functions.toXML(sql, scan.titre)
 
 
 
