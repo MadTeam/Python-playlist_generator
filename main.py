@@ -11,21 +11,21 @@ scan = parser.parse_args() #la variable 'scan' conservera l'ensemble des argumen
 '''logging'''
 fmt = "%(levelname)s %(asctime)s : %(message)s"
 datefmt="%d/%m/%Y - %H:%M:%S"
-log = logging('playlist.log', scan.verbose, fmt, datefmt)
+log = logging('playlist.log', scan.verbeux, fmt, datefmt)
 
-for ARG in ['name', 'format', 'length']:
+for ARG in ['nom', 'format', 'temps']:
 	elem = getattr(scan, ARG)
 	if elem is not None:
 		log.debug(ARG+" -> "+elem)
 
 functions.init(log)
-sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre')
+
+scan.temps = functions.convert(scan.temps, 666)
 
 ##############################
-# 'genre' est la concaténation du nom et du pourcentage
 dict_args = dict()
 
-for ARGS in ['genre', 'subgenre', 'artist', 'album', 'title']:
+for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
 		dict_args[ARGS] = arg_list
@@ -41,23 +41,25 @@ for ARGS in dict_args:
 		pourcentage[ARGS] = elem[1]
 
 print(pourcentage)
-			
-'''if ARGS == 'genre':
-				list_genre.append(functions.convert(elem[1], 1))
 
-print(list_genre)
-totalenre
-for elem in lis_genre:
-	totalgenre += elem'''
+##################################
+where = str()
+i = 0
 
-'''
-for ARG in ['genre', 'subgenre', 'artist', 'album', 'title']:
-	i = 0
-	if getattr(scan, ARG) is not None:
-		elem = getattr(scan, ARG)
-		while i < len(elem):
-			log.debug(ARG+" : \n\t-1 : "+str(elem[0])+"\n\t-2 : "+str(elem[1])) #affiche la valeur envoyee pour chaque argument
-			elem[1] = functions.convert(elem[1], 666) #convertit l'argument 2 (pourcentage) en un entier
-			functions.chkValue(elem[1], 0, 101) #verifie si la valeur absolue de l'argument 2 est compris entre 1 et 100
+for ARGS in dict_args:
+	for elem in dict_args[ARGS]:
+		if i == 1:
+			if scan.intersection:
+				where += " AND " + ARGS + " ~ '"+ elem[0] +"'"
+			else:
+				where += " OR " + ARGS + " ~ '"+ elem[0] +"'"
+		else:
+			where += ARGS + " ~ '"+ elem[0] +"'"
+			i = 1
 
-###########################'''
+
+print(where)
+sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where)
+
+for elem in sql:
+	print(elem)

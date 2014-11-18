@@ -9,18 +9,19 @@ def argparse():
 	opt = parser.add_argument_group("Arguments optionnels ", "Ils permettent d'obtenir un pourcentage sur un critere specifique (ex: - genre rock 70 => 70% de la playlist sera composee de rock)")
 
 	#arguments positionnels
-	obli.add_argument("name", help="output name of file")
-	obli.add_argument("format", help="output format of file (xspf, m3u, pls available)", choices=["xspf", "m3u", "pls"])
-	obli.add_argument("length", help="total length of the playlist ('h' to hour, 'm' to minute)")
+	obli.add_argument("nom", help="nom du fichier de sortie")
+	obli.add_argument("format", help="format du fichier (xspf, m3u ou pls)", choices=["xspf", "m3u", "pls"])
+	obli.add_argument("temps", help="durée totale de la playlist en minute")
 
 	#arguments optionnels
-	opt.add_argument("-h", "--help", help="show help", action="help")
-	opt.add_argument("-v", "--verbose", help="all informations will be visible like debug information", action="store_true")
-	opt.add_argument("-G", "--genre", nargs=2, action="append", help="genre and percentage of genre")
-	opt.add_argument("-g", "--subgenre", nargs=2, action="append", help="subgenre and percentage of subgenre")
-	opt.add_argument("-a", "--artist", nargs=2, action="append", help="artist and percentage of artist")
-	opt.add_argument("-A", "--album", nargs=2, action="append", help="album and percentage of album")
-	opt.add_argument("-t", "--title", nargs=2, action="append", help="title ad percentage of title")
+	opt.add_argument("-h", "--help", "--aide", help="affiche l'aide", action="help")
+	opt.add_argument("-v", "--verbeux", help="affiche l'ensemble des informations", action="store_true")
+	opt.add_argument("-i", "--intersection", help="permet d'obtenir l'intersection des demandes de la playlist", action="store_true")
+	opt.add_argument("-G", "--genre", nargs=2, action="append", help="nom et pourcentage du genre")
+	opt.add_argument("-g", "--sousgenre", nargs=2, action="append", help="nom et pourcentage du sous-genre")
+	opt.add_argument("-a", "--artiste", nargs=2, action="append", help="nom et pourcentage de l'artiste")
+	opt.add_argument("-A", "--album", nargs=2, action="append", help="nom et pourcentage de l'album")
+	opt.add_argument("-t", "--titre", nargs=2, action="append", help="nom et pourcentage du titre")
 
 	return parser
 
@@ -80,7 +81,7 @@ class functions:
 			self._log.error("converting of "+str(variable)+" to absolute integer failed")
 			return False
 
-	def getSqlBdd(self, user, addr, bdd):
+	def getSqlBdd(self, user, addr, bdd, where=None):
 		import sqlalchemy as sql
 	
 		try:
@@ -96,7 +97,12 @@ class functions:
 				sql.Column('sousgenre', sql.String),
 				sql.Column('duree', sql.String),
 			)
-			query = sql.select([morceaux])
+			
+			if where != None:
+				query = sql.select([morceaux]).where(where)
+			else:
+				query = sql.select([morceaux])
+
 			result = bdd.execute(query)
 			return result
 		except:
