@@ -19,9 +19,8 @@ for ARG in ['nom', 'format', 'temps']:
 		log.debug(ARG+" -> "+elem)
 
 functions.init(log)
-
 scan.temps = functions.convert(scan.temps, 666)
-
+#configuration de base
 ##############################
 dict_args = dict()
 
@@ -32,7 +31,7 @@ for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
 		for elem in dict_args[ARGS]:
 			elem[1] = functions.convert(elem[1], 666)
 
-print(dict_args)
+log.debug(dict_args)
 
 pourcentage = dict()
 for ARGS in dict_args:
@@ -40,8 +39,8 @@ for ARGS in dict_args:
 	for elem in dict_args[ARGS]:
 		pourcentage[ARGS] = elem[1]
 
-print(pourcentage)
-
+log.debug(pourcentage)
+#récupération des arguments et factorisation des pourcentages
 ##################################
 where = str()
 i = 0
@@ -58,8 +57,29 @@ for ARGS in dict_args:
 			i = 1
 
 
-print(where)
+log.debug("conditions SQL(regex compris) : "+where)
 sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where)
 
 for elem in sql:
-	print(elem)
+	log.info(elem)
+#récupération de la liste des musiques exigées
+###################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#génération de la playlist
+###############################

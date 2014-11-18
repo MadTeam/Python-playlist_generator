@@ -4,9 +4,9 @@
 def argparse():
 	import argparse
 
-	parser = argparse.ArgumentParser(prog="Personal playlist generator", add_help=False, description="WIP", epilog="note : le generateur accepte les expressions regulieres dans les arguments optionnels", prefix_chars='-')
-	obli = parser.add_argument_group("Arguments obligatoires ", "Obligatoires pour genere la playlist")
-	opt = parser.add_argument_group("Arguments optionnels ", "Ils permettent d'obtenir un pourcentage sur un critere specifique (ex: - genre rock 70 => 70% de la playlist sera composee de rock)")
+	parser = argparse.ArgumentParser(prog="Personal playlist generator", add_help=False, description="Permet de généner une playlist au format désiré avec différentes options", epilog="note : le générateur accepte les expressions régulieres dans les arguments optionnels", prefix_chars='-')
+	obli = parser.add_argument_group("Arguments obligatoires ", "Obligatoires pour générer la playlist")
+	opt = parser.add_argument_group("Arguments optionnels ", "Ils permettent d'obtenir un pourcentage sur un critère spécifique (ex: --genre rock 70 => 70% de la playlist sera composée de rock)")
 
 	#arguments positionnels
 	obli.add_argument("nom", help="nom du fichier de sortie")
@@ -16,7 +16,7 @@ def argparse():
 	#arguments optionnels
 	opt.add_argument("-h", "--help", "--aide", help="affiche l'aide", action="help")
 	opt.add_argument("-v", "--verbeux", help="affiche l'ensemble des informations", action="store_true")
-	opt.add_argument("-i", "--intersection", help="permet d'obtenir l'intersection des demandes de la playlist", action="store_true")
+	opt.add_argument("-i", "--intersection", "--and", help="permet d'obtenir l'intersection des demandes de la playlist", action="store_true")
 	opt.add_argument("-G", "--genre", nargs=2, action="append", help="nom et pourcentage du genre")
 	opt.add_argument("-g", "--sousgenre", nargs=2, action="append", help="nom et pourcentage du sous-genre")
 	opt.add_argument("-a", "--artiste", nargs=2, action="append", help="nom et pourcentage de l'artiste")
