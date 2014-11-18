@@ -70,6 +70,7 @@ elif(max(elem[1])) > 100):
 			reste = 100 - somme
 			reatt = reste / none #Ici, reatt est le résultat de la division entre le reste et les elem[1] remis à zéro
 			total = somme + (reatt * none) #On multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
+			total = somme + (reatt * none) #Là, on multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
 	#5)
 		elif(somme > 100):
 		#Arrêter le programme et afficher un message d'erreur
@@ -93,6 +94,14 @@ elif(max(elem[1])) > 100):
 				#La réponse est autre que 'o' ou 'n'
 					valid = false
 				
+			print('Les genres dépassant les 100% ont été mis à 0%. Souhaitez-vous tout de même valider votre sélection?')
+				if(scan = str('non')):
+				#Si non, réafficher la sélection et laisser l'utilisateur redéfinir les pourcentages
+					
+				else:
+				#Si oui, générer directement la playlist
+					
+					
 #Dans le cas où l'utilisateur est vraiment très con
 elif(min(elem[1]) <= 0 || somme < 0):
 	log.warning('Valeur(s) saisie(s) négative(s) ou nulle(s)')
