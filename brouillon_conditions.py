@@ -1,23 +1,24 @@
 '''Raccourcis:
-
 (*1) Requête de génération finale à insérer
 
 Exemples								Etat du code:
 
 1) --genre rock 60 --genre hip-hop 30 --genre pop 10			=> (*1)
 2) --genre rock 60 --genre hip-hop 30					=> Condition remplie (et correcte?) / (*1)
-3) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 20	=> Condition à insérer (et correcte?) / (*1)
+3) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 20	=> Condition remplie (et correcte?) / (*1)
 
 4) --genre rock 60 --genre hip-hop 30 --genre rap 110			=> Condition remplie (et correcte?) / (*1)
 5) --genre rock 60 --genre hip-hop 30 --genre pop 40 --genre rap 110	=> Condition remplie (et correcte?) 
-6) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 110	=> Condition à compléter (et correcte?) / (*1)
-'''
+6) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 110	=> Condition à compléter (et correcte?) / (*1)'''
+
 #Attributs supplémentaires
 somme float #Pour définir le total des elem[1] en un seul nombre
 reste float #Pour déterminer le nombre de pourcentage inutilisé lors d'une sélection
-reatt float #Pour déterminer le multiplicateur du pourcentage restant en fonction du total des elem[1] none
+divid float #Pour déterminer le pourcentage restant après la division de chaque elem[1] par le nombre d'elem[1] et leur addition (condition 3)
+reatt float #Pour déterminer le multiplicateur du pourcentage restant en fonction du total des elem[1] none (condition 4)
 total float #Pour définir à nouveau la somme avec le rajout du reste
-none int #Pour rassembler tous les elem[1] none (conditions 4, 5, 6)
+valid bool  #Pour valider une boucle (condition 6)
+none int    #Pour rassembler tous les elem[1] none (conditions 4, 5, 6)
 
 #Chaque elem[1] d'un genre est compté dans l'attribut somme
 somme += elem[1]
@@ -27,7 +28,6 @@ somme += elem[1]
 if(somme == 100):
 #Générer directement la playlist
 	
-
 
 #Dans le cas où aucun elem[1] de la ligne ne dépasse pas 100
 elif(max(elem[1])) < 100):
@@ -49,9 +49,11 @@ elif(max(elem[1])) < 100):
 				log.warning('Le pourcentage total a dépassé de loin la valeur maximale autorisée')
 				print('La somme des pourcentages égale ou excède les 200%. Le programme s\'est arrêté.')
 			else:
-				
-			
-			
+				divid += elem[1] / len(elem[1])
+				reste = 100 - divid
+				reatt = reste / len(elem[1])
+				total += elem[1] + reatt
+
 #Dans le cas où un ou plusieurs elem[1] de la ligne dépassent 100
 elif(max(elem[1])) > 100):
 	while(!max(elem[1] > 100)):
@@ -67,7 +69,7 @@ elif(max(elem[1])) > 100):
 			log.debug('Les valeurs none ont été redéfinis pour permettre à l\'ensemble des pourcentages d\'atteindre 100%.')
 			reste = 100 - somme
 			reatt = reste / none #Ici, reatt est le résultat de la division entre le reste et les elem[1] remis à zéro
-			total = somme + (reatt * none) #Là, on multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
+			total = somme + (reatt * none) #On multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
 	#5)
 		elif(somme > 100):
 		#Arrêter le programme et afficher un message d'erreur
@@ -77,14 +79,20 @@ elif(max(elem[1])) > 100):
 	#6)
 		elif(somme == 100):
 		#Générer un message de validation
-			print('Les genres dépassant les 100% ont été mis à 0%. Souhaitez-vous tout de même valider votre sélection?')
-				if(scan = str('non')):
+			while(!valid = true):
+				print('Les genres dépassant les 100% ont été mis à 0%. Souhaitez-vous tout de même valider votre sélection (o/n)?')
+				if(scan = str('n')):
 				#Si non, réafficher la sélection et laisser l'utilisateur redéfinir les pourcentages
 					
-				else:
+					valid = true
+				elif(scan = str('o')):
 				#Si oui, générer directement la playlist
-					
-					
+						
+					valid = true
+				else:
+				#La réponse est autre que 'o' ou 'n'
+					valid = false
+				
 #Dans le cas où l'utilisateur est vraiment très con
 elif(min(elem[1]) <= 0 || somme < 0):
 	log.warning('Valeur(s) saisie(s) négative(s) ou nulle(s)')
