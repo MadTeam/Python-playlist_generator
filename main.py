@@ -5,25 +5,29 @@
 from config import *
 
 '''argparse'''
-parser = argparse()
+parser = argparse() #contient le parser définit dans config
 scan = parser.parse_args() #la variable 'scan' conservera l'ensemble des arguments
 
 '''logging'''
 fmt = "%(levelname)s %(asctime)s : %(message)s"
 datefmt="%d/%m/%Y - %H:%M:%S"
-log = logging('playlist.log', scan.verbeux, fmt, datefmt)
+log = logging('playlist.log', scan.verbeux, fmt, datefmt) #permet de conçevoir un logging dépendant du mode verbose
+
+functions.init(log) #initialise le logging pour les fonctions de config
 
 for ARG in ['nom', 'format', 'temps']:
 	elem = getattr(scan, ARG)
 	if elem is not None:
 		log.debug(ARG+" -> "+elem)
 
-functions.init(log)
+scan.format = scan.format.lower()
 scan.temps = functions.convert(scan.temps, 666)
-#configuration de base
+if scan.temps == False:
+	print("le temps spécifié n'est pas au format valide")
+	quit()
+#configuration de base et logging
 ##############################
-dict_args = dict()
-
+dict_args = dict() #contiendra uniquement les arguments optionnels
 for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
@@ -33,16 +37,20 @@ for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
 
 log.debug(dict_args)
 
-pourcentage = dict()
+pourcentage = dict() #contiendra les pourcentages selon l'argument
 for ARGS in dict_args:
 	pourcentage[ARGS] = dict_args
 	for elem in dict_args[ARGS]:
-		pourcentage[ARGS] = elem[1]
+		if elem[1] != False:
+			pourcentage[ARGS] = elem[1]
+		else:
+			print("Le pourcentage de "+ ARGS +" n'est pas au format valide")
+			quit()
 
 log.debug(pourcentage)
 #récupération des arguments et factorisation des pourcentages
 ##################################
-where = str()
+where = str() #contiendra la requête SQL (condition uniquement)
 i = 0
 
 for ARGS in dict_args:
@@ -57,31 +65,17 @@ for ARGS in dict_args:
 			i = 1
 
 
-log.debug("conditions SQL(regex compris) : "+where)
-sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where)
+log.debug("conditions SQL (regex compris) : WHERE "+where)
 
-sql = list(sql)
+sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where) #contiendra le résultat de la requête
+music_list = list(sql)
 
-for elem in sql:
+for elem in music_list:
 	log.info(elem)
 #récupération de la liste des musiques exigées
 ###################################
 
-functions.toXML(sql, scan.titre)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+functions.generateOut(music_list, scan.nom, scan.format)
 
 #génération de la playlist
 ###############################

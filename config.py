@@ -107,27 +107,59 @@ class functions:
 		except:
 			self._log.error("connection to "+addr+'/'+bdd+' with '+user+' failed')
 			quit()
-		
 
 	def toXML(self, music_list, filename):
+		import getpass
 		from lxml import etree
-		root = etree.Element('playlist')
+
+		root = etree.Element('playlist', version='1', xmlns='http://xspf.org/ns/0/')
 		doc = etree.ElementTree(root)
-		i = 0
-		
+
+		title = etree.SubElement(root, 'title')
+		title.text = str(filename)
+		creator = etree.SubElement(root, 'creator')
+		creator.text = str(getpass.getuser())
+		trackList = etree.SubElement(root, 'trackList')
+
 		for elem in music_list:
-			child = etree.SubElement(root, "music"+str(i))
-			path = etree.SubElement(child, elem[0])
-			title = etree.SubElement(child, elem[1])
-			artist = etree.SubElement(child, elem[2])
-			album = etree.SubElement(child, elem[3])
-			genre = etree.SubElement(child, elem[4])
-			subgenre = etree.SubElement(child, elem[5])
-			length = etree.SubElement(child, elem[6])
-			i += 1
-		
+			track = etree.SubElement(trackList, 'track')
+			location = etree.SubElement(track, 'location')
+			location.text = str(elem[0])
+			trTitle = etree.SubElement(track, 'title')
+			trTitle.text = str(elem[1])
+			trCreator = etree.SubElement(track, 'creator')
+			trCreator.text = str(elem[2])
+			annot = etree.SubElement(track, 'annotation')
+			annot.text = "genre : "+ str(elem[4]) +"\nsous-genre : "+ str(elem[5])
+			album = etree.SubElement(track, 'album')
+			album.text = str(elem[3])
+
+		doc.write(str(filename), xml_declaration=False, encoding='utf-16')
+
+
+	def generateOut(self, music_list, filename, outFormat):
+		filename = filename+'.'+outFormat
 		outFile = open(filename, 'w')
-		doc.write(outFile)
+
+		if outFormat == "m3u":
+			outFile.write("#EXTM3U\n\n")
+			for elem in music_list:
+				outFile.write("#EXTINF:"+ str(elem[6]) +','+ str(elem[1]) +'\n')
+				outFile.write(str(elem[0]) +'\n\n')
+		elif outFormat == "pls":
+			i = 0
+			outFile.write("[playlist]\n\n")	
+			for elem in music_list:
+				i += 1
+				outFile.write("File"+ str(i) +"="+ str(elem[0]) +'\n')
+				outFile.write("Title"+ str(i) +"="+ str(elem[1]) +'\n')
+				outFile.write("Length"+ str(i) +"="+ str(elem[6]) +'\n\n')
+			outFile.write("NumberOfEntries="+ str(i) +'\n')
+			outFile.write("Version=2")
+		elif outFormat == "xspf":
+			self.toXML(music_list, filename)
+
+		outFile.close()
 
 	init = classmethod(init)
 	diffType = classmethod(diffType)
@@ -135,3 +167,4 @@ class functions:
 	chkValue = classmethod(chkValue)
 	getSqlBdd = classmethod(getSqlBdd)
 	toXML = classmethod(toXML)
+	generateOut = classmethod(generateOut)
