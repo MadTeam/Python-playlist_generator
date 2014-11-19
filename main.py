@@ -46,40 +46,35 @@ reatt = 0. #Pour déterminer le multiplicateur du pourcentage restant en fonctio
 total = 0. #Pour définir à nouveau la somme avec le rajout du reste
 none = 0.  #Pour rassembler tous les elem[1] none (conditions avec valeurs none)
 
-#Dictionnaire d'arguments 
+#Dictionnaire d'arguments
+#Genre est la concaténation du nom et du pourcentage
 dict_args = dict()
 for ARGS in ['genre', 'subgenre', 'artist', 'album', 'title']:
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
 		dict_args[ARGS] = arg_list
 		for elem in dict_args[ARGS]:
-			elem[1] = functions.convert(elem[1], 1)
-			print(dict_args)
-
-#Genre est la concaténation du nom et du pourcentage
-pourcentage = dict()
-for ARGS in dict_args:
-	pourcentage[ARGS] = dict_args
-	for elem in dict_args[ARGS]:
-		pourcentage[ARGS] = elem[1]
-		#Chaque elem[1] d'un genre est compté dans l'attribut somme
-		somme += elem[1]
-		#print(somme)
-		print(max(elem[1]))
+			elem[1] = int(elem[1])
+		pourcentage = dict()
+		for ARGS in dict_args:
+			pourcentage[ARGS] = dict_args
+			for elem in dict_args[ARGS]:
+				#Chaque elem[1] d'un genre est compté dans l'attribut somme
+				somme += elem[1]
+				print(elem[1], str(' + valeur précédente = '), somme)
 		
 #1) Condition fonctionnelle
 #Dans le cas où la somme des elem[1] est égale à 100
 if(somme == 100):
 	log.debug(ARG+": \n\t-1: "+ str(elem[0]) +"\n\t-2: "+ str(elem[1])) #Affiche la valeur envoyée pour chaque argument
 	#Générer directement la playlist
-	print(somme)
 	print('Condition n°1 remplie')
-
+'''
 #Dans le cas où aucun elem[1] de la ligne ne dépasse pas 100
-elif((max(elem[1])) < 100):
+elif(elmax < 100):
 	while(somme != 100.):
 		log.debug(ARG+": \n\t-1: "+ str(elem[0]) +"\n\t-2: "+ str(elem[1])) #Affiche la valeur envoyée pour chaque argument
-	#2) Condition à tester
+	#2) Condition à débuguer
 		if(somme < 100.):
 		#Prendre elem[1] de chaque genre et les refactoriser pour obtenir un total de 100
 			reste = 100. - somme
@@ -88,8 +83,9 @@ elif((max(elem[1])) < 100):
 			total = somme + (reste / len(elem[1]))
 			#Générer la playlist
 			print('Condition n°2 remplie')
+
 	#3) Condition à tester
-		'''elif(somme > 100.):
+		elif(somme > 100.):
 		#Prendre elem[1] de chaque genre et les refactoriser pour obtenir un total de 100
 			if(somme >= 200.):
 				log.warning('Le pourcentage total a dépassé de loin la valeur maximale autorisée')
@@ -100,10 +96,10 @@ elif((max(elem[1])) < 100):
 				reatt = reste / len(elem[1])
 				total += elem[1] + reatt
 				#Générer la playlist
-				print('Condition n°3 remplie')'''
-'''
+				print('Condition n°3 remplie')
+
 #Dans le cas où un ou plusieurs elem[1] de la ligne dépassent 100
-elif(max(elem[1])) > 100.:
+elif(elmax > 100.):
 	while(max(elem[1]) > 100.):
 		elmax = max(elem[1]) 
 		max(elem[1]) = 0.
@@ -121,6 +117,7 @@ elif(max(elem[1])) > 100.:
 			total = somme + (reatt * none) #Multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
 			#Générer la playlist
 			print('Condition n°4 remplie')
+			
 	#5) Condition à tester
 		elif(somme > 100.):
 		#Arrêter le programme et afficher un message d'erreur
@@ -129,6 +126,7 @@ elif(max(elem[1])) > 100.:
 			print('Veuillez recommencer, s\'il vous plaît.')
 			#Générer la playlist
 			print('Condition n°5 remplie')
+			
 	#6) Condition à tester
 		elif(somme == 100.):
 		#Laisser à zéro les elem[1] et générer directement la playslist
@@ -138,6 +136,7 @@ elif(max(elem[1])) > 100.:
 					
 					
 #Dans le cas où l'utilisateur est vraiment très con
-elif(min(elem[1]) <= 0. or somme < 0.):
-	log.warning('Valeur(s) saisie(s) négative(s) ou nulle(s)')
-	print('Les pourcentages négatifs ne sont pas pris en compte par la ligne de commande. Le programme s\'est arrêté.')'''
+elif(min(elem[1]) < 0 or somme < 0):
+	log.warning('Valeur(s) saisie(s) négative(s)')
+	print('Les pourcentages négatifs ne sont pas pris en compte par la ligne de commande. Le programme s\'est arrêté.')
+'''
