@@ -1,0 +1,32 @@
+2)Pour elem[1] < 100:		Constats:
+
+90 = 60 + 30			(total initial pair)
+10 = 100 - 90			(reste pair)
+
+5 = 10 / 2			(division du reste par le nombre d'elem[1])
+
+100 = (60 + 5) + (30 + 5)	(rajout des pourcentages restants)
+100 =    65    +    35		(total final)
+
+91 = 61 + 30			(total initial impair)
+9 = 100 - 91			(reste impair)
+
+4 (+1) || 4.5 = 9 / 2		(float mieux adapté que le integer pour les totaux initiaux et les restes impairs)
+______________________________
+3)Pour elem[1] > 100:
+
+120 = 60 + 30 + 10 + 20		(total initial)
+-20 = 100 - 120			(reste négatif; solution inadaptée)
+
+...				(recherche de solutions...)
+				(solution possible -> diviser chaque pourcentage par le nombre total de pourcentages saisis par l'utilisateur; si 					 reste > 0, alors appliquer la condition 2) pour terminer la refactorisation... solution envisageable)
+				(solution adaptée)
+				
+30 = 60/4 + 30/4 + 10/4 + 20/4	(division de chaque elem[1] par le total d'elem[1])
+30 = 15 + 7.5 + 2.5 + 5
+
+70 = 100 - 30			(reste en soustrayant 100 par le résultat de la division précédente)
+17.5 = 70/4			(division du reste par le nombre d'elem[1])
+
+100 = (15 + 17.5) + (7.5 + 17.5) + (2.5 + 17.5) + (5 + 17.5)
+100 = 	  32.5	  +	 25	 +	20	+     22.5
