@@ -1,0 +1,41 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc} %encodage en utf-8 pour la console UNIX
+\usepackage[francais]{babel}
+\usepackage{latex2man} %importation du package permettant de générer un document LaTeX en manpage
+
+\begin{document}
+intro :
+le générateur de playlist permet de générer un fichier dans un format spécial qui contient un ensemble de titre musical selon les choix de l'utilisateur
+
+contenu :
+le packet contient les fichiers :
+-main.py -> programme principal
+-config.py -> fichier de configuration
+-playlist.log -> fichier de log
+[-docs/manual.pdf -> le présent manuel]
+[-docs/manual.tex -> le fichier LaTeX du manuel]
+[-docs/manual.manpage -> le fichier permettant une manpage]
+[-docs/manual.html -> le manuel au format internet]
+
+pré-requis :
+python 3
+
+utilisation :
+./generator name format length [-h] [-v]
+**************legende : les arguments entre crochets sont optionnels******************
+
+arguments obligatoires :
+-name : le nom du fichier de sortie
+-format : permet de choisir le format du fichier de sortie
+le format doit correspondre à l'un des 3 choix proposés {xspf,m3u,pls}
+-length : la durée totale de la playlist en minutes
+la durée choisie doit être supérieure à 0 et ne comporter aucune lettre
+
+arguments optionnels :
+-h --help : affiche l'aide (en anglais)
+-v --verbose : permet l'affichage détaillé des opérations (ces informations sont également disponible dans le fichier de log)
+
+
+
+\end{document}
