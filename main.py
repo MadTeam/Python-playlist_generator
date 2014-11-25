@@ -1,36 +1,33 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-'''importation des bibliotheques nécessaires'''
 from config import *
+'''importation des bibliotheques nécessaires'''
 
+parser = argparse() #Contient le parser définit dans config
+scan = parser.parse_args() #La variable 'scan' conservera l'ensemble des arguments
 '''argparse'''
-parser = argparse() #contient le parser définit dans config
-scan = parser.parse_args() #la variable 'scan' conservera l'ensemble des arguments
 
-'''logging'''
 fmt = "%(levelname)s %(asctime)s : %(message)s"
 datefmt="%d/%m/%Y - %H:%M:%S"
-log = logging('playlist.log', scan.verbeux, fmt, datefmt) #permet de conçevoir un logging dépendant du mode verbose
+log = logging('playlist.log', scan.verbeux, fmt, datefmt) #Permet de conçevoir un logging dépendant du mode verbose
+'''logging'''
 
-functions.init(log) #initialise le logging pour les fonctions de config
+functions.init(log) #Initialise le logging pour les fonctions de config
 
 for ARG in ['nom', 'format', 'temps']:
 	elem = getattr(scan, ARG)
 	if elem is not None:
 		log.debug(ARG+" -> "+elem)
 
-<<<<<<< HEAD
 scan.format = scan.format.lower()
 scan.temps = functions.convert(scan.temps, 666)
 if scan.temps == False:
 	print("le temps spécifié n'est pas au format valide")
 	quit()
-#configuration de base et logging
-##############################
-dict_args = dict() #contiendra uniquement les arguments optionnels
+#Configuration de base et logging
+dict_args = dict() #Contiendra uniquement les arguments optionnels
 for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
-=======
 functions.init(log)
 sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre')
 
@@ -63,17 +60,14 @@ none = 0.  #Pour rassembler tous les elem[1] none (conditions avec valeurs none)
 #Genre est la concaténation du nom et du pourcentage
 dict_args = dict()
 for ARGS in ['genre', 'subgenre', 'artist', 'album', 'title']:
->>>>>>> 9a8c72fdc69c8599d2dea94037f32ff94b59ad5d
 	if getattr(scan, ARGS) is not None:
 		arg_list = getattr(scan, ARGS)
 		dict_args[ARGS] = arg_list
 		for elem in dict_args[ARGS]:
-<<<<<<< HEAD
 			elem[1] = functions.convert(elem[1], 666)
 
 log.debug(dict_args)
-
-pourcentage = dict() #contiendra les pourcentages selon l'argument
+pourcentage = dict() #Contiendra les pourcentages selon l'argument
 for ARGS in dict_args:
 	pourcentage[ARGS] = dict_args
 	for elem in dict_args[ARGS]:
@@ -84,9 +78,8 @@ for ARGS in dict_args:
 			quit()
 
 log.debug(pourcentage)
-#récupération des arguments et factorisation des pourcentages
-##################################
-where = str() #contiendra la requête SQL (condition uniquement)
+#Récupération des arguments et factorisation des pourcentages
+where = str() #Contiendra la requête SQL (condition uniquement)
 i = 0
 
 for ARGS in dict_args:
@@ -100,22 +93,16 @@ for ARGS in dict_args:
 			where += ARGS + " ~ '"+ elem[0] +"'"
 			i = 1
 
-
 log.debug("conditions SQL (regex compris) : WHERE "+where)
-
-sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where) #contiendra le résultat de la requête
+sql = functions.getSqlBdd('etudiant:passe', '172.16.99.2:5432', 'radio_libre', where) #Contiendra le résultat de la requête
 music_list = list(sql)
 
 for elem in music_list:
 	log.info(elem)
-#récupération de la liste des musiques exigées
-###################################
-
+#Récupération de la liste des musiques exigées
 functions.generateOut(music_list, scan.nom, scan.format)
 
-#génération de la playlist
-###############################
-=======
+#Génération de la playlist
 			elem[1] = int(elem[1])
 		pourcentage = dict()
 		for ARGS in dict_args:
@@ -202,4 +189,3 @@ elif(min(elem[1]) < 0 or somme < 0):
 	log.warning('Valeur(s) saisie(s) négative(s)')
 	print('Les pourcentages négatifs ne sont pas pris en compte par la ligne de commande. Le programme s\'est arrêté.')
 '''
->>>>>>> 9a8c72fdc69c8599d2dea94037f32ff94b59ad5d
