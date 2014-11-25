@@ -1,17 +1,17 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-'''importation des bibliotheques nécessaires'''
 from config import *
+'''importation des bibliotheques nécessaires'''
 
-'''argparse'''
 parser = argparse() #contient le parser définit dans config
+'''argparse'''
 scan = parser.parse_args() #la variable 'scan' conservera l'ensemble des arguments
 
-'''logging'''
 fmt = "%(levelname)s %(asctime)s : %(message)s"
 datefmt="%d/%m/%Y - %H:%M:%S"
 log = logging('playlist.log', scan.verbeux, fmt, datefmt) #permet de conçevoir un logging dépendant du mode verbose
+'''logging'''
 
 functions.init(log) #initialise le logging pour les fonctions de config
 
@@ -26,7 +26,6 @@ if scan.temps == False:
 	print("le temps spécifié n'est pas au format valide")
 	quit()
 #configuration de base et logging
-##############################
 dict_args = dict() #contiendra uniquement les arguments optionnels
 for ARGS in ['genre', 'sousgenre', 'artiste', 'album', 'titre']:
 	if getattr(scan, ARGS) is not None:
@@ -49,7 +48,6 @@ for ARGS in dict_args:
 
 log.debug(pourcentage)
 #récupération des arguments et factorisation des pourcentages
-##################################
 where = str() #contiendra la requête SQL (condition uniquement)
 i = 0
 
@@ -73,9 +71,7 @@ music_list = list(sql)
 for elem in music_list:
 	log.info(elem)
 #récupération de la liste des musiques exigées
-###################################
 
 functions.generateOut(music_list, scan.nom, scan.format)
 
 #génération de la playlist
-###############################

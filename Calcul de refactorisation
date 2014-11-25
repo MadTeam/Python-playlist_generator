@@ -23,7 +23,7 @@ ______________________________
 				(solution adaptée)
 				
 30 = 60/4 + 30/4 + 10/4 + 20/4	(division de chaque elem[1] par le total d'elem[1])
-30 = 15 + 7.5 + 2.5 + 5
+30 = 15 + 7.5 + 2.5 + 5		(addition de chaque elem[1] diminué)
 
 70 = 100 - 30			(reste en soustrayant 100 par le résultat de la division précédente)
 17.5 = 70/4			(division du reste par le nombre d'elem[1])
