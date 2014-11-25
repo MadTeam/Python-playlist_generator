@@ -9,7 +9,7 @@ Exemples								Etat du code:
 
 4) --genre rock 60 --genre hip-hop 30 --genre rap 110			=> Condition remplie (et correcte?) / (*1)
 5) --genre rock 60 --genre hip-hop 30 --genre pop 40 --genre rap 110	=> Condition remplie (et correcte?) 
-6) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 110	=> Condition à compléter (et correcte?) / (*1)'''
+6) --genre rock 60 --genre hip-hop 30 --genre pop 10 --genre rap 110	=> Condition remplie (et correcte?) / (*1)
 
 #Attributs supplémentaires
 somme float #Pour définir le total des elem[1] en un seul nombre
@@ -56,7 +56,7 @@ elif(max(elem[1])) < 100):
 
 #Dans le cas où un ou plusieurs elem[1] de la ligne dépassent 100
 elif(max(elem[1])) > 100):
-	while(!max(elem[1] > 100)):
+	while(max(elem[1]) > 100):
 		max(elem[1]) = 0
 		none = len(elem[1] = 0)
 	while(!somme == 100):
@@ -69,8 +69,7 @@ elif(max(elem[1])) > 100):
 			log.debug('Les valeurs none ont été redéfinis pour permettre à l\'ensemble des pourcentages d\'atteindre 100%.')
 			reste = 100 - somme
 			reatt = reste / none #Ici, reatt est le résultat de la division entre le reste et les elem[1] remis à zéro
-			total = somme + (reatt * none) #On multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
-			total = somme + (reatt * none) #Là, on multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
+			total = somme + (reatt * none) #Multiplie reatt par le nombre de none pour compléter la somme des elem[1] corrects
 	#5)
 		elif(somme > 100):
 		#Arrêter le programme et afficher un message d'erreur
@@ -79,30 +78,12 @@ elif(max(elem[1])) > 100):
 			print('Veuillez recommencer, s\'il vous plaît.')
 	#6)
 		elif(somme == 100):
-		#Générer un message de validation
-			while(!valid = true):
-				print('Les genres dépassant les 100% ont été mis à 0%. Souhaitez-vous tout de même valider votre sélection (o/n)?')
-				if(scan = str('n')):
-				#Si non, réafficher la sélection et laisser l'utilisateur redéfinir les pourcentages
-					
-					valid = true
-				elif(scan = str('o')):
-				#Si oui, générer directement la playlist
-						
-					valid = true
-				else:
-				#La réponse est autre que 'o' ou 'n'
-					valid = false
-				
-			print('Les genres dépassant les 100% ont été mis à 0%. Souhaitez-vous tout de même valider votre sélection?')
-				if(scan = str('non')):
-				#Si non, réafficher la sélection et laisser l'utilisateur redéfinir les pourcentages
-					
-				else:
-				#Si oui, générer directement la playlist
+		#Laisser à zéro les elem[1] et générer directement la playslist
+			log.debug('Les valeurs none ont été délaissées pour permettre la génération de la playlist avec les valeurs correctes.')
+			
 					
 					
 #Dans le cas où l'utilisateur est vraiment très con
 elif(min(elem[1]) <= 0 || somme < 0):
 	log.warning('Valeur(s) saisie(s) négative(s) ou nulle(s)')
-	print('Les pourcentages négatifs ne sont pas pris en compte par la ligne de commande. Le programme s\'est arrêté.')
+	print('Les pourcentages négatifs ne sont pas pris en compte par la ligne de commande. Le programme s\'est arrêté.')'''
